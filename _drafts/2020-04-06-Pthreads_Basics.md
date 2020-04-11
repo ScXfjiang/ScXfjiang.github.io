@@ -1,22 +1,21 @@
 ---
 layout:     post
+title:      Pthreads Basics
 toc:        true
-categories: [System Programming, C/C++]
+categories: [Multithread Programming, C/C++]
 ---
-
-# Ⅰ. Pthreads Basics
+## Pthreads
 Linux内核只为线程提供了底层原语，多线程模型是在用户空间实现的，POSIX对Linux线程库进行了标准化，产生了Pthreads，它是目前C/C++项目的主要线程解决方案。
 ## (一) 线程的创建、终止和错误处理
 ### 1. 线程的创建
 ```c
-// start_routine返回void*类型指针，指向用户自定义的Exit Code
 int pthread_create(pthread_t *thread,
                    const pthread_attr_t *attr,
                    void *(*start_routine)(void *),
                    void *arg);
 ```
-**Thead ID**
-
+注：start_routine返回void\*，指向Exit Code，如果不需要获取Exit Code，返回NULL即可；此外，用户还可以调用pthread_exit(void\* rval_ptr)终止线程并设置指向Exit Code的指针，如果不需要获取Exit Code，传入NULL即可。
+#### Thead ID
 类似于**Process Id (PID)**，每个线程都对应一个**Thread ID (TID)**，其类型是pthread_t，POSIX并没有规定它必须是一个算数类型。Process ID由Linux内核分配，在整个系统中是唯一的；Thread ID由Pthreads分配，它只有在所属的进程上下文中才有意义。
 ```c
 // 获取Thread ID
@@ -25,48 +24,6 @@ pthread_t pthread_self();
 // 比较Thread ID
 int pthread_equal(pthread_t t1, pthread_t t2)
 ```
----
-[练习] 打印Thread ID ([source code](https://github.com/ScXfjiang/pthreads_demo/blob/master/create_thread.c))
-
-```c
-#include <pthread.h>
-#include <stdio.h>
-
-void print_tid(const char* thrd_name) {
-  pthread_t tid = pthread_self();
-  printf("%-12s tid %lu (0x%lx)\n", thrd_name, (unsigned long)tid, (unsigned long)tid);
-}
-
-void* thrd_func(void* arg) {
-  print_tid("new thread");
-  return NULL;
-}
-
-int main() {
-  print_tid("main thread");
-
-  pthread_t thread;
-  int err = pthread_create(&thread, NULL, thrd_func, NULL);
-  if (err) {
-    printf("Can't create thread\n");
-    return 0;
-  }
-
-  err = pthread_join(thread, NULL);
-  if (err) {
-    printf("Can't join thread\n");
-    return 0;
-  }
-
-  return 0;
-}
-
-
-// output
-// main thread  tid 139995959031616 (0x7f5359687740)
-// new thread   tid 139995950536448 (0x7f5358e6d700)
-```
----
 
 ### 2. 线程的终止、Exit Code与资源回收
 线程在以下情况下会终止：
@@ -74,13 +31,13 @@ int main() {
 
 2. 线程调用pthread_exit()主动终止，这和调用exit()函数类似
 ```c
-void pthread_exit(void *rval_ptr);
+void pthread_exit(void* rval_ptr);
 ```
 3. 被同一进程内另一个线程通过pthread_cancel()函数取消，这和通过kill()发送SIGKILL信号类似
 ```c
 int pthread_cancel(pthread_t thread);
 ```
-如果线程主动退出(情况1和2)，线程函数的返回值或rval_ptr指向Exit Code；如果线程被取消，由rval_ptr指定的内存单元就设置为PTHREAD_CANCELED，可以通过pthread_join()获取Exit Code。 
+如果线程主动退出(情况1和2)且需要获取Exit Code，需要将线程函数的返回值或rval_ptr指向Exit Code；如果线程被取消，由rval_ptr指定的内存单元就设置为PTHREAD_CANCELED。可以通过pthread_join()获取Exit Code。 
 
 #### Joinable vs. Detached (资源回收)
 
@@ -88,8 +45,6 @@ int pthread_cancel(pthread_t thread);
 
 ```c
 // 调用线程阻塞直到thread终止
-// 获取线程Exit Code通常的做法是在pthread_join()外定义一个void*指针ptr，然后将其地址传入pthread_join()，
-// pthread_join()函数会修改ptr指向Exit Code，所以这里是void **rval_ptr。
 int pthread_join(pthread_t thread, void **rval_ptr);
 
 // 将thread设置为detached状态
@@ -97,8 +52,10 @@ int pthread_detach(pthread_t thread);
 ```
 
 ---
-[练习] 获取线程Exit Code
+[例 ] 获取线程的Exit Code
 ```c++
+// 本文仅介绍Pthreads主体逻辑，不做任何防御式编程。
+
 #include <pthread.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -114,34 +71,17 @@ void* thrd2_func(void* arg) {
 }
 
 int main() {
-  int err;
   pthread_t thread1;
   pthread_t thread2;
   void* ret1 = NULL;
   void* ret2 = NULL;
 
-  err = pthread_create(&thread1, NULL, thrd1_func, NULL);
-  if (err) {
-    printf("Can't create thread1\n");
-    return 0;
-  }
-  err = pthread_create(&thread2, NULL, thrd2_func, NULL);
-  if (err) {
-    printf("Can't create thread2\n");
-    return 0;
-  }
+  pthread_create(&thread1, NULL, thrd1_func, NULL);
+  pthread_create(&thread2, NULL, thrd2_func, NULL);
 
-  err = pthread_join(thread1, &ret1);
-  if (err) {
-    printf("Can't join thread1\n");
-    return 0;
-  }
+  pthread_join(thread1, &ret1);
   printf("thread 1 exit code: %s", (char*)ret1);
-  err = pthread_join(thread2, &ret2);
-  if (err) {
-    printf("Can't join thread2\n");
-    return 0;
-  }
+  pthread_join(thread2, &ret2);
   printf("thread 2 exit code: %s", (char*)ret2);
 
   return 0;
@@ -159,7 +99,7 @@ int main() {
 多数Pthreads函数在成功时返回0，否则返回error number。
 
 ## (二) 线程同步
-Pthreads使用同步对象实现线程间的同步，本节将介绍Mutex, RWLock, Condition Variable和Barrier。它们的编程范式基本相同：**首先初始化一个多个线程可见的共享同步对象，然后各个线程使用该共享对象进行同步。**
+Pthreads使用同步对象实现线程间的同步，本节将介绍其中的Mutex、RWLock、Condition Variable和Barrier。它们的编程范式基本相同：**首先初始化一个多个线程可见的共享同步对象，然后各个线程使用该共享对象进行同步。**
 
 ### 1. Mutex
 ```c
@@ -181,7 +121,7 @@ int pthread_mutex_timedlock(pthread_mutex_t* mutex
                             const struct timespec* tsptr);
 ```
 
-### Readers-Writer Locks
+### 2. Readers-Writer Lock
 ```c
 // initialize and destroy
 int pthread_rwlock_init(pthread_rwlock_t* rwlock,
@@ -205,7 +145,7 @@ int pthread_rwlock_timedwrlock(pthread_rwlock_t* rwlock,
                                const struct timespec* tsptr);
 ```
 
-### 2. Condition Variable
+### 3. Condition Variable
 Condition Varaible允许一组线程根据Condition进行同步。Condition本身是由Mutex保护的，Condition的改变和检查之前都必须先锁住Mutex。
 
 ```c
@@ -227,6 +167,8 @@ int pthread_cond_timedwait(pthread_cond_t* cond, pthread_mutex_t mutex,
 
 下面以一个"Producer-Consumer"例子展开对Condition Varaible的讨论：有两个线程prepare_msg()和process_msg()，prepare_msg()负责生产msg并将其放入消息队列queue中，process_msg()负责消费msg，同步逻辑是如果消息队列中没有msg，那么process_msg()挂起，prepare_msg()每准备好一个msg就发送信号给process_msg()，该信号会唤醒process_msg()使其消费msg。
 ```c++
+// 本文仅介绍Pthreads主体逻辑，不做任何防御式编程。
+
 #include <pthread.h>
 #include <queue>
 #include <iostream>
@@ -275,27 +217,10 @@ int main() {
   pthread_t producer;
   pthread_t consumer;
 
-  int err = pthread_create(&producer, NULL, prepare_msg, NULL);
-  if (err) {
-    std::cout << "Can't create thread" << std::endl;
-    return 0;
-  }
-  err = pthread_create(&consumer, NULL, process_msg, NULL);
-  if (err) {
-    std::cout << "Can't create thread" << std::endl;
-    return 0;
-  }
+  pthread_create(&producer, NULL, prepare_msg, NULL);
+  pthread_create(&consumer, NULL, process_msg, NULL);
 
-  err = pthread_join(producer, NULL);
-  if (err) {
-    std::cout << "Can't join thread" << std::endl;
-    return 0;
-  }
-  err = pthread_join(consumer, NULL);
-  if (err) {
-    std::cout << "Can't join thread" << std::endl;
-    return 0;
-  }
+  pthread_join(producer, NULL);
 }
 
 // out
@@ -341,7 +266,7 @@ int main() {
 // thrd 1: process and dequeue msg (19)
 ```
 
-有几个常见的问题：
+几个常见的问题：
 
 1. pthread_cond_wait()实现原理，为什么pthread_cond_wait()需要传入一个mutex？
 
@@ -372,8 +297,4 @@ int main() {
 
    A: 不行，这里涉及消息队列的修改，必须放入临界区中。
 
-
-### 3. Spin Lock
-
-
-# Ⅱ. 使用Pthreads实现常见并发模型
+### 4. Barrier
