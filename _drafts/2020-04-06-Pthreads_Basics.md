@@ -103,7 +103,7 @@ Pthreads使用同步对象实现线程间的同步，本节将介绍其中的Mut
 
 ### 1. Mutex
 ```c
-// initialize and destroy
+// init and destroy
 int pthread_mutex_init(pthread_mutex_t* mutex,
                        const pthread_mutexattr_t* mutex_attr);
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -123,7 +123,7 @@ int pthread_mutex_timedlock(pthread_mutex_t* mutex
 
 ### 2. Readers-Writer Lock
 ```c
-// initialize and destroy
+// init and destroy
 int pthread_rwlock_init(pthread_rwlock_t* rwlock,
                         const pthread_rwlockattr_t* attr);
 int pthread_rwlock_destroy(pthread_rwlock_t* rwlock);
@@ -149,7 +149,7 @@ int pthread_rwlock_timedwrlock(pthread_rwlock_t* rwlock,
 Condition Varaible允许一组线程根据Condition进行同步。Condition本身是由Mutex保护的，Condition的改变和检查之前都必须先锁住Mutex。
 
 ```c
-// initialize and destroy
+// init and destroy
 int pthread_cond_init(pthread_cond_t* cond,
                       const pthread_condattr_t* cond_attr);
 pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
@@ -298,3 +298,15 @@ int main() {
    A: 不行，这里涉及消息队列的修改，必须放入临界区中。
 
 ### 4. Barrier
+Barrier允许多个线程等待，直到指定数量的线程都达到某点，然后从该点继续执行。
+```c
+// init and destroy
+int pthread_barrier_init(pthread_barrier_t* barrier,
+                         const pthread_barrierattr_t* attr,
+                         unsigned int count);
+int pthread_barrier_destroy(pthread_barrier_t* barrier);
+
+// basics
+int pthread_barrier_wait(pthread_barrier_t* barrier);
+```
+Barrier在初始化时指定在允许所有线程继续执行前，必须到达Barrier的线程数目（Barrier Count）。到达pthread_barrier_wait()的线程在未满足Barrier Count的情况下会挂起，等待Barrier Count的满足；如果该线程是最后一个调用pthread_barrier_wait()的线程且满足了Barrier Count，所有线程被唤醒继续向前执行。
