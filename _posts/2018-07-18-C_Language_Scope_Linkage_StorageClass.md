@@ -1,13 +1,8 @@
 ---
 layout:     post
 title:      C语言：标识符的作用域、链接属性以及变量的存储类型
-subtitle:   
-date:       2020-03-18
-author:     ScXfjiang
-header-img:
-catalog: true
-tags:
-    - C/C++
+toc:        true
+categories: [C/C++]
 ---
 ## 一、标识符的作用域（scope）
 **标识符的作用域决定了标识符在本编译单元的可见范围（哪里可以被使用）。**

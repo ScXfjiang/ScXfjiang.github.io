@@ -1,13 +1,8 @@
 ---
 layout:     post
 title:      C++ Polymorphism
-subtitle:   
-date:       2020-03-25
-author:     ScXfjiang
-header-img:
-catalog: true
-tags:
-    - C/C++
+toc:        true
+categories: [C/C++]
 ---
 ## 一、动多态（运行时多态）
 C++的运行时多态是通过virtual table机制实现的。C++会为每个声明virtual function的class创建一个**vtbl (virtual table)**，在构建该class实例的时候会为该实例添加**vptr (virtual pointer)** 指向该class的vtbl。需要说明的是，C++运行时多态只能通过pointer和reference实现，原因是对pointer和reference进行类型转换不会修改该对象的vptr。
