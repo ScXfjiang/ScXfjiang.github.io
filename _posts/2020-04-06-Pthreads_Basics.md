@@ -27,7 +27,7 @@ int pthread_equal(pthread_t t1, pthread_t t2)
 
 ### 2. 线程的终止、Exit Code与资源回收
 线程在以下情况下会终止：
-1. 线程函数正常返回，这和main()函数结束类似
+1. 线程函数执行完毕正常返回，这和main()函数结束类似
 
 2. 线程调用pthread_exit()主动终止，这和调用exit()函数类似
 ```c
@@ -281,7 +281,7 @@ int main() {
    }
    ```
    一次完整的生产消费关系如下图所示：
-   ![condition variable](/assets/images/posts/post_2020-04-06-Pthreads_cond_var.jpg)
+   ![condition variable](/assets/images/posts/post_2020-04-06-Pthreads_Basics_cond_var.jpg)
 
     每个红框都是由mutex保护的critical section，Condition的修改和检查均要有mutex保护。**传入mutex的原因**是希望挂起线程的时候将mutex释放掉，让其他线程修改或检查消息队列，等信号到来唤醒时候再去把mutex抢回来处理消息。
 
