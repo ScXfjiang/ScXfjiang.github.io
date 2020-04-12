@@ -23,4 +23,8 @@ STL中使用std::thread::id类表示Thread Id，并在std::thread中提供了get
 * 线程函数正常return返回
 * 被其他线程取消
 
+#### Joinable vs. Detached (资源回收)
+std::thread提供join()表示当前线程等待该线程执行完毕并回收资源，也提供detach()方法设置线程为Detached状态。
+
 ### 错误处理
+STL多线程解决方案使用异常处理多线程中出现的错误。
