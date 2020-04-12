@@ -19,7 +19,7 @@ STL对线程做了一层封装，使用std::thread类表示。[cppreference: std
 STL中使用std::thread::id类表示Thread Id，并在std::thread中提供了get_id()方法。
 
 ### 线程的终止
-线程在一下情况下会终止：
+线程在以下情况下会终止：
 * 线程函数正常return返回
 * 被其他线程取消
 
