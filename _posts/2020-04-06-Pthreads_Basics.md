@@ -146,7 +146,7 @@ int pthread_rwlock_timedwrlock(pthread_rwlock_t* rwlock,
 ```
 
 ### 3. Condition Variable
-Condition Varaible允许一组线程根据Condition进行同步。Condition本身是由Mutex保护的，Condition的改变和检查之前都必须先锁住Mutex。
+Condition variable允许一组线程根据Condition进行同步。Condition本身是由Mutex保护的，Condition的改变和检查之前都必须先锁住Mutex。
 
 ```c
 // init and destroy
@@ -165,7 +165,7 @@ int pthread_cond_timedwait(pthread_cond_t* cond, pthread_mutex_t mutex,
                            const struct timespec* tsptr);
 ```
 
-下面以一个"Producer-Consumer"例子展开对Condition Varaible的讨论：有两个线程prepare_msg()和process_msg()，prepare_msg()负责生产msg并将其放入消息队列queue中，process_msg()负责消费msg，同步逻辑是如果消息队列中没有msg，那么process_msg()挂起，prepare_msg()每准备好一个msg就发送信号给process_msg()，该信号会唤醒process_msg()使其消费msg。
+下面以一个"Producer-Consumer"例子展开对Condition variable的讨论：有两个线程prepare_msg()和process_msg()，prepare_msg()负责生产msg并将其放入消息队列queue中，process_msg()负责消费msg，同步逻辑是如果消息队列中没有msg，那么process_msg()挂起，prepare_msg()每准备好一个msg就发送信号给process_msg()，该信号会唤醒process_msg()使其消费msg。
 ```c++
 // 本文仅介绍Pthreads主体逻辑，不做任何防御式编程。
 
