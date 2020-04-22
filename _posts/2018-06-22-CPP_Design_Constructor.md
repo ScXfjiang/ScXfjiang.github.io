@@ -63,11 +63,10 @@ return object;
 ```
 
 ## 2. 设计Constructor
-方向：根据类的使用场景明确对象的初始化方式，以此设计构造函数。
+#### Item 01: 显示声明使用或拒绝编译器默认提供的默认构造函数。
 
-例如：
-* 如果不希望以Copy Intialization的方式初始化对象，那么就将构造函数声明成explicit；
-* 如果不希望编译器默认创建Copy Constructor就将其delete掉；
-* ...
+#### Item 02: Initialization和Copy Constructor的关系是雷锋和雷峰塔的关系。
 
-有了思考方向，构造函数的设计并不复杂，后面再陆续补充一些细节。
+#### Item 03: Copy Constructor和Move Constructor一般加const。
+
+#### Item 04: ......
