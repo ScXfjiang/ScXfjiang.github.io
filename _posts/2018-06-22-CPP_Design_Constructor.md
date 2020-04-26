@@ -65,8 +65,22 @@ return object;
 ## 2. 设计Constructor
 #### Item 01: 显示声明使用或拒绝编译器默认提供的默认构造函数。
 
-#### Item 02: Initialization和Copy Constructor的关系是雷锋和雷峰塔的关系。
+#### Item 02: Copy Initialization与Copy Constructor无关，与explicit修饰有关。
 
-#### Item 03: Copy Constructor和Move Constructor一般加const。
+#### Item 03: Copy Constructor一般加const修饰，Move Constructor不要加const修饰。
 
-#### Item 04: ......
+#### Item 04: 如果不希望类的实例进行Copy Initialization (可能会涉及一些隐式转换)，那么将Constructor声明为explicit。
+通常，将Constructor声明成为explicit是一个good practice！
+
+[看这里的讨论](https://groups.google.com/forum/#!topic/comp.std.c++/PoReMFR0_r4)
+> If we would have started to design C++ from today on, there
+is a good chance, that all constructors and conversion functions
+were "explicit" by default, but a user could make the "implicit".
+Alas, the time cannot be turned back and we have to live with
+the current state. This means that we have to be careful in
+regard to implicit constructors (except for the copy/move
+constructor). It is a safer rule to make constructors explicit,
+where some form of conversion is involved (i.e. any constructor
+with an argument type U different from the actual type T).
+
+#### Item 05: ...
