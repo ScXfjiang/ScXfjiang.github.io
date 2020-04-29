@@ -67,7 +67,7 @@ return object;
 
 #### Item 02: Copy Initialization与Copy Constructor无关，与explicit修饰有关。
 
-#### Item 03: Copy Constructor一般加const修饰，Move Constructor不要加const修饰。
+#### Item 03: Copy Constructor同时提供const和非const版本，Move Constructor不要加const修饰。
 
 #### Item 04: 如果不希望类的实例进行Copy Initialization (可能会涉及一些隐式转换)，那么将Constructor声明为explicit。
 通常，将除Copy Constructor和Move Constructor外的、单个参数的Constructor声明成为explicit是一个good practice，除非接受隐式转换！
