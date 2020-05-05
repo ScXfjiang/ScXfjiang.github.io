@@ -13,7 +13,7 @@ categories: [System Programming, C/C++]
 | Page Cache  | Linux系统上所有的I/O操作均要经过Page Cache，这部分是内核缓冲，无法控制。     |
 | Disk Cache  | 基本上所有磁盘都有Cache。                                              |
 
-如果不是库的重度开发者，通常我们不需要考虑Cache优化问题，直接使用指定格式文件的I/O库即可，例如JSON、TFRecord等。
+如果不是库的重度开发者，通常我们不需要过度考虑Cache优化问题，或者说只需要考虑粗粒度的Cache优化，直接使用指定格式文件的I/O库即可，例如JSON、TFRecord等。
 
 PS：即便不考虑Cache优化问题，也要理解I/O在不同级别想要解决的问题及相关抽象。例如：系统级别的POSIX I/O仅仅是将文件看做是没有任何格式的一个个字节，提供Write/Read/Seek等最基本的操作；语言级别的C Standard I/O是对POSIX I/O的封装，主要目的是管理User Cache，减少不必要的系统调用，等等。
 
