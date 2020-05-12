@@ -20,21 +20,21 @@ int socket(int family, int type, int protocol);
 
 常见的参数：
 
-| family      |                        说明                                         |
+| family      |                        说明                                        |
 | ----------- | ------------------------------------------------------------------ |
-| AF_INET     | IPv4协议                                                            |
-| AF_INET6    | IPv6协议                                                            |
+| AF_INET     | IPv4协议                                                           |
+| AF_INET6    | IPv6协议                                                           |
 
-| type        |                        说明                                         |
+| type        |                        说明                                        |
 | ----------- | ------------------------------------------------------------------ |
-| SOCK_STREAM | 字节流套接字                                                         |
-| SOCK_DGRAM  | 数据报套接字                                                         |
-| SOCK_RAW    | 原始套接字                                                           |
+| SOCK_STREAM | 字节流套接字                                                       |
+| SOCK_DGRAM  | 数据报套接字                                                       |
+| SOCK_RAW    | 原始套接字                                                         |
 
-| protocol    |                        说明                                         |
+| protocol    |                        说明                                        |
 | ----------- | ------------------------------------------------------------------ |
-| IPPROTO_TCP | TCP传输协议                                                         |
-| IPPROTO_UDP | UDP传输协议                                                         |
+| IPPROTO_TCP | TCP传输协议                                                        |
+| IPPROTO_UDP | UDP传输协议                                                        |
 
 ### 1.2 bind()
 初始化Socket Endpoint的时候没有设置IP Address和Port，需要调用bind()将IP Address和端Port与Socket Endpoint绑定。如果一个Server/Client并没有调用bind()进行IP Address和Port的绑定，那么内核就会为其设置本机的IP Address并临时分配一个Port。这种行为一般仅适用于Client，而Server一般要暴露一个众所周知的Port。
@@ -53,7 +53,7 @@ int connect(int sockfd, const struct sockaddr* servaddr, socketlen_t addrlen);
 ```
 
 ### 1.4 listen()
-Listen()仅由TCP Server调用，它指示Linux Kernel此Socket Endpoint应该接受指向它的连接请求，第二个参数规定了Linux Kernel应该为该Socket Endpoint排队的最大连接数。
+listen()仅由TCP Server调用，它指示Linux Kernel此Socket Endpoint应该接受指向它的连接请求，第二个参数规定了Linux Kernel应该为该Socket Endpoint排队的最大连接数。
 ```c
 #include <sys/socket.h>
 
