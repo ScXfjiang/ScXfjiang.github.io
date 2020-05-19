@@ -89,7 +89,7 @@ Lexer仅仅将上述代码看作是A stream of characters：
 | Kleene closure of $$L$$               |  $$L^*=\bigcup^{\infty}_{i=0}L^i$$                                |
 | Positive closure of $$L$$             |  $$L^+=\bigcup^{\infty}_{i=1}L^i$$                                |
 
-这些概念比较简单，直接贴出Dragon Book中的一个例子：
+可以看到，Operations on Languages仅仅是一些集合操作，下面直接贴出Dragon Book中的例子读者就应该理解了。
 
 #### 2.2.1 Example from Dragon Book
 Let $$L$$ be the set of letters $$\{A, B, ..., Z, a, b, ..., z\}$$ and let $$D$$
@@ -99,18 +99,25 @@ uppercase and lowercase letters and of digits. The second way is that $$L$$ and 
 are languages, all of whose strings happen to be of length one. Here are some
 other languages that can be constructed from languages $$L$$ and $$D$$.
 
-* $$L\bigcup D$$ is the set of letters and digits -- strictly speaking the language
-with 62 strings of length one, each of which strings is either one letter or
-one digit.
-* $$LD$$ is the set of 520 strings of length two, each consisting of one letter
-followed by one digit.
-* $$L^4$$ is the set of all $$4$$-letter strings.
-* $$L^*$$ is the set of all strings of letters, including $$\epsilon$$, the empty string.
-* $$L(L\bigcup D)$$ is the set of all strings of letters and digits beginning with a letter.
-* $$D^+$$ is the set of all strings of one or more digits.
-
+| Operations            | Definition and Notations                                                                                                                                 |
+|:--------------------- |:-----------------------------------------------------------------                                                                                        |
+| $$L\bigcup D$$        |  the set of letters and digits – strictly speaking the language with 62 strings of length one, each of which strings is either one letter or one digit.  |
+| $$LD$$                |  the set of 520 strings of length two, each consisting of one letter followed by one digit.                                                              |
+| $$L^4$$               |  the set of all 4-letter strings.                                                                                                                        |
+| $$L^*$$               |  the set of all strings of letters, including ϵ, the empty string.                                                                                       |
+| $$L(L\bigcup D)$$     |  the set of all strings of letters and digits beginning with a letter.                                                                                   |
+| $$D^+$$               |  the set of all strings of one or more digits.                                                                                                           |
 
 ## 3. Regular Expression
+### 3.1 Regular Expression Basics
+Regular Expression是每个程序员应该掌握的基本功，这里不展开介绍了。对于想要学习Regular Expression的人这里推荐一本书：Introducing Regular Expressions，和一个正则表达式的练习工具：Expressions (MacOS)。
+
+### 3.2 Regular Expression在Lexer中的应用
+Lexer使用Regular Expression作为Pattern识别输入(A sequence of characters)中的lexeme，并将其转化成为token。
+
+### 3.3 Regular Language
+每个Regular Expression $$r$$都对应了一个Language $$L(r)$$。前面说过，Language仅仅是String的可数集合，每个Regular Expression表达了一组String，这一组String就可以构成一个Language。使用Regular Expression
+定义的Language被称为**Regular Language**，在后面介绍Parser的文章中，我们会了解到Language也可以由由**Context-Free Gramma**定义，到时候会对比这两种Language在表达能力上的不同。
 
 ## 4. The Lexical-Analyzer Generator: Lex
-
+TODO
