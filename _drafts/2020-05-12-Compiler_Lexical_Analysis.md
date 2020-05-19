@@ -22,15 +22,15 @@ Token Name代表了Token的类别，例如identifier, keyword；Token Attribute�
 
 一门语言的Compiler支持如下Token：
 
-| Token                | Examples    |
-|:-------------------- |:----------- |
-| **keyword**          | if, else    |
-| **id (identifier)**  | pi, score   |
-| **number**           | 3.1415926   |
-| **literal**          | "core dump" |
-| **assign_op**        | =           |
-| **multi_op**         | *           |
-| **exp_op**           | **          |
+| Token               | Examples    |
+| :------------------ | :---------- |
+| **keyword**         | if, else    |
+| **id (identifier)** | pi, score   |
+| **number**          | 3.1415926   |
+| **literal**         | "core dump" |
+| **assign_op**       | =           |
+| **multi_op**        | *           |
+| **exp_op**          | **          |
 
 下面是使用该语言所写的一个statement：
 ```python
@@ -82,12 +82,12 @@ Lexer仅仅将上述代码看作是A stream of characters：
 
 ### 2.2 Operations on Languages
 
-| Operations                            | Definition and Notations                                          |
-|:------------------------------------- |:-----------------------------------------------------------------:|
-| Union of $$L$$ and $$M$$              |  $$L\bigcup M=\{s\ \vert\ s$$ is in $$L$$ or $$s$$ is in $$M\}$$  |
-| Concatenation of $$L$$ and $$M$$      |  $$LM=\{st\ \vert\ s$$ is in $$L$$ and $$t$$ is in $$M\}$$        |
-| Kleene closure of $$L$$               |  $$L^*=\bigcup^{\infty}_{i=0}L^i$$                                |
-| Positive closure of $$L$$             |  $$L^+=\bigcup^{\infty}_{i=1}L^i$$                                |
+| Operations                       |                    Definition and Notations                     |
+| :------------------------------- | :-------------------------------------------------------------: |
+| Union of $$L$$ and $$M$$         | $$L\bigcup M=\{s\ \vert\ s$$ is in $$L$$ or $$s$$ is in $$M\}$$ |
+| Concatenation of $$L$$ and $$M$$ |    $$LM=\{st\ \vert\ s$$ is in $$L$$ and $$t$$ is in $$M\}$$    |
+| Kleene closure of $$L$$          |                $$L^*=\bigcup^{\infty}_{i=0}L^i$$                |
+| Positive closure of $$L$$        |                $$L^+=\bigcup^{\infty}_{i=1}L^i$$                |
 
 可以看到，Operations on Languages仅仅是一些集合操作，下面直接贴出Dragon Book中的例子读者就应该理解了。
 
@@ -99,14 +99,14 @@ uppercase and lowercase letters and of digits. The second way is that $$L$$ and 
 are languages, all of whose strings happen to be of length one. Here are some
 other languages that can be constructed from languages $$L$$ and $$D$$.
 
-| Operations            | Definition and Notations                                                                                                                                 |
-|:--------------------- |:-----------------------------------------------------------------                                                                                        |
-| $$L\bigcup D$$        |  the set of letters and digits – strictly speaking the language with 62 strings of length one, each of which strings is either one letter or one digit.  |
-| $$LD$$                |  the set of 520 strings of length two, each consisting of one letter followed by one digit.                                                              |
-| $$L^4$$               |  the set of all 4-letter strings.                                                                                                                        |
-| $$L^*$$               |  the set of all strings of letters, including ϵ, the empty string.                                                                                       |
-| $$L(L\bigcup D)$$     |  the set of all strings of letters and digits beginning with a letter.                                                                                   |
-| $$D^+$$               |  the set of all strings of one or more digits.                                                                                                           |
+| Operations        | Definition and Notations                                                                                                                               |
+| :---------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| $$L\bigcup D$$    | the set of letters and digits – strictly speaking the language with 62 strings of length one, each of which strings is either one letter or one digit. |
+| $$LD$$            | the set of 520 strings of length two, each consisting of one letter followed by one digit.                                                             |
+| $$L^4$$           | the set of all 4-letter strings.                                                                                                                       |
+| $$L^*$$           | the set of all strings of letters, including ϵ, the empty string.                                                                                      |
+| $$L(L\bigcup D)$$ | the set of all strings of letters and digits beginning with a letter.                                                                                  |
+| $$D^+$$           | the set of all strings of one or more digits.                                                                                                          |
 
 ## 3. Regular Expression
 ### 3.1 Regular Expression Basics
@@ -117,7 +117,7 @@ Lexer使用Regular Expression作为Pattern识别输入(A sequence of characters)
 
 ### 3.3 Regular Language
 每个Regular Expression $$r$$都对应了一个Language $$L(r)$$。前面说过，Language仅仅是String的可数集合，每个Regular Expression表达了一组String，这一组String就可以构成一个Language。使用Regular Expression
-定义的Language被称为**Regular Language**，在后面介绍Parser的文章中，我们会了解到Language也可以由由**Context-Free Gramma**定义，到时候会对比这两种Language在表达能力上的不同。
+定义的Language被称为**Regular Language**，在后面介绍Parser的文章中，我们会了解到Language也可以由由**Context-Free Grammaa**定义，到时候会对比这两种Language在表达能力上的不同。
 
 ## 4. The Lexical-Analyzer Generator: Lex
 TODO
