@@ -6,7 +6,11 @@ categories: [Compiler]
 ---
 ## 1. The Role of Parser
 Lexer的职责是将"A stream of characters"转化成为"A stream of tokens"，Parser是Lexer的后级，负责赋予
-"A stream of tokens"以语法结构，通常为Parse Tree，然后将Parse Tree交给Compiler Front End的剩余部分处理。
+"A stream of tokens"以语法结构，通常为**Parse Tree**，然后将Parse Tree交给Compiler Front End的剩余部分处理。
+
+注意，在逻辑上Syntax Analysis阶段只是赋予"A stream of tokens"以语法结构，该结构并不包含任何语义(Semantic)信息，
+在实现中，Parser可能与Compiler Front End的剩余部分在同一个模块实现，例如在生成Parse Tree的同时加入语义信息，
+并没有一个显式的Parse Tree。
 
 一共有三种类型的Parser：**universal**, **top-down**, **bottom-up**。universal类型的Parser可以解析任何
 grammar，但是效率不高；top-down parser自顶(root)向下(leaves)构建Parse Tree，bottom-up parser自底
@@ -39,21 +43,18 @@ A Context-Free Grammar consists of **terminials**, **nonterminals**, a **start s
 > The **productions** of a grammar specify the manner in which the **terminals** 
 > and **nonterminals** can be combined to form strings. Each production
 > consists of:
-> 1. A nonterminal called the head or left side of the production; this
+> 1. A nonterminal called the **head** or left side of the production; this
 > production defines some of the strings denoted by the head.
 > 2. The symbol $$\rightarrow$$ Sometimes $$::=$$ has been used in place of the arrow.
-> 3. A body or right side consisting of zero or more terminals and nonterminals.
+> 3. A **body** or right side consisting of zero or more terminals and nonterminals.
 > The components of the body describe one way in which
 > strings of the nonterminal at the head can be constructed.
 
-下面看两个例子：
+如果一个"A sequence of grammar symbol (S)"满足某个grammar (G)，我们就说S is a setence of G.
+
+下面看几个例子：
 
 ##### [例1] the grammar defines *if-else statements*
-这个grammar定义了一个*if-else statement*。
-
-* start symbol为$$stmt$$；
-* $$stmt$$和$$expr$$为nonterminals；
-* $$\boldsymbol{if}$$和$$\boldsymbol{else}$$作为keyword是terminals。
 
 $$
 \begin{aligned}
@@ -62,26 +63,85 @@ expr\ &\rightarrow\ ...
 \end{aligned}
 $$
 
-##### [例2]  the grammar defines simple arithmetic expressions:
-这个grammar定义了简单的数学运算表达式。
+这个grammar定义了一个*if-else statement*。
 
-* start symbol为$$expression$$；
-* $$expression$$、$$term$$和$$factor$$为nonterminals；
-* $$\boldsymbol{id}$$、operator $$+$$、$$-$$、$$*$$和$$/$$为terminals。
+* start symbol为$$stmt$$；
+* $$stmt$$和$$expr$$为nonterminals；
+* $$\boldsymbol{if}$$和$$\boldsymbol{else}$$作为keyword是terminals；
+
+statement
+```c
+if (cond)
+  // do something
+else
+  // do something
+```
+is a setence of this grammar，回车换行符已经在Lexical Analysis阶段处理。
+
+##### [例2] the grammar defines simple arithmetic expressions
 
 $$
 \begin{aligned}
-expression\ &\rightarrow\ expression\ + \ term  \\
-expression\ &\rightarrow\ expression\ - \ term  \\
-expression\ &\rightarrow\ term                  \\
-term\ &\rightarrow\ term\ *\ factor             \\
-term\ &\rightarrow\ term\ /\ factor             \\
-term\ &\rightarrow\ factor                      \\
-factor\ &\rightarrow\ (\ expression\ )          \\
-factor\ &\rightarrow\ \boldsymbol{id}           \\
-
-
+E\ &\rightarrow\ E\ +\ E\ \vert\ E\ *\ E\ \vert\ -E\ \vert\ (\ E\ )\ \vert\ \boldsymbol{id}\\
 \end{aligned}
 $$
 
-## Syntax Error Handling and Recovery Strategies
+这个grammar定义了简单的arithmetic expressions。
+
+* start symbol为$$E$$；
+* $$E$$、$$term$$为nonterminals；
+* $$\boldsymbol{id}$$、operator $$+$$、$$*$$为terminals；
+
+arithemetic expression
+```
+5 * 2 + 3
+```
+is a setence of this grammar.
+
+### 2.2 Derivations and Parse Tree
+#### 2.2.1 Derivations
+Derivation指的是遵循某种Grammar逐步将production head替换成为production body的过程。
+
+##### Notations: $$\Rightarrow$$, $$\overset{*}{\Rightarrow}$$ and $$\overset{+}{\Rightarrow}$$
+为了防止歧义，下面以英文介绍Notations。
+
+Consider a nonterminal $$A$$ in the middle of a sequence of grammar symbols, as in $$\alpha A\beta$$,
+where $$\alpha$$ and $$\beta$$ are arbitrary strings of grammar symbols. Suppose $$A\ \rightarrow\ \gamma$$
+is a production. Then, we write $$\alpha A\beta\ \Rightarrow\ \alpha\gamma\beta$$. The symbol $$\Rightarrow$$
+means "derives in one step". When a sequence of derivation steps $$\alpha_1\ \Rightarrow\ \alpha_2\ \Rightarrow\ ...\ \Rightarrow\ \alpha_n$$
+rewrites $$\alpha_1$$ to $$\alpha_n$$, we say $$\alpha_1$$ *derives* $$\alpha_n$$.
+We use $$\overset{*}{\Rightarrow}$$ to denote "derives in zero or more steps" and $$\overset{+}{\Rightarrow}$$
+to denote "derives in one or more steps".
+
+##### Leftmost Derivations and Rightmost Derivations: $$\underset{lm}{\Rightarrow}$$ and $$\underset{rm}{\Rightarrow}$$
+* In **leftmost derivations**, the leftmost nonterminal in each sentential is always chosen which is denoted by  $$\underset{lm}{\Rightarrow}$$;
+* In **rightmost derivations (aka. canonical derivations)**, the rightmost nonterminal is always chosen which is denoted by $$\underset{rm}{\Rightarrow}$$;
+
+以上面的[例2] simple arithmetic expression语法为例讲解本节讲到的notations：
+
+$$
+\begin{aligned}
+E\ &\rightarrow\ E\ +\ E\ \vert\ E\ *\ E\ \vert\ -E\ \vert\ (\ E\ )\ \vert\ \boldsymbol{id} \\
+\end{aligned}
+$$
+
+$$ -(\boldsymbol{id} + \boldsymbol{id}) $$
+is a *setence* of simple arighemetic grammar, we can derive from start symbol $$E$$ to this setence in two different processes:
+
+$$
+\begin{aligned}
+E\ \underset{lm}{\Rightarrow}\ -E \underset{lm}{\Rightarrow}\ -(E + E) \underset{lm}{\Rightarrow}\ -(\boldsymbol{id} + E) \underset{lm}{\Rightarrow}\ -(\boldsymbol{id} + \boldsymbol{id}) \\
+\end{aligned}
+$$
+
+or
+
+$$
+\begin{aligned}
+E\ \underset{rm}{\Rightarrow}\ -E \underset{rm}{\Rightarrow}\ -(E + E) \underset{rm}{\Rightarrow}\ -(E + \boldsymbol{id}) \underset{rm}{\Rightarrow}\ -(\boldsymbol{id} + \boldsymbol{id}) \\
+\end{aligned}
+$$
+
+注意在第三次derive的时候，leftmost derivation先derive的是左侧的$$E$$，而rightmost derivation先derive的是右侧的$$E$$。
+
+#### 2.2.2 Parse Tree 
