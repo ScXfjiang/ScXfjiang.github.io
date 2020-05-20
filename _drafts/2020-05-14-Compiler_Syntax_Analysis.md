@@ -7,10 +7,8 @@ categories: [Compiler]
 ## 1. The Role of Parser
 Lexer的职责是将"A stream of characters"转化成为"A stream of tokens"，Parser是Lexer的后级，负责赋予
 "A stream of tokens"以语法结构，通常为**Parse Tree**，然后将Parse Tree交给Compiler Front End的剩余部分处理。
-
-注意，在逻辑上Syntax Analysis阶段只是赋予"A stream of tokens"以语法结构，该结构并不包含任何语义(Semantic)信息，
-在实现中，Parser可能与Compiler Front End的剩余部分在同一个模块实现，例如在生成Parse Tree的同时加入语义信息，
-并没有一个显式的Parse Tree。
+注意，逻辑上Syntax Analysis阶段只是赋予"A stream of tokens"以语法结构，该结构并不包含任何语义(Semantic)信息，
+例如类型信息。
 
 一共有三种类型的Parser：**universal**, **top-down**, **bottom-up**。universal类型的Parser可以解析任何
 grammar，但是效率不高；top-down parser自顶(root)向下(leaves)构建Parse Tree，bottom-up parser自底
@@ -24,7 +22,7 @@ Grammar用来描述Language的Syntax，Syntax更抽象，Grammar更具体，在C
 ### 2.1 Definition of Context-Free Grammar
 A Context-Free Grammar consists of **terminials**, **nonterminals**, a **start symbol** and **productions**.
 #### Terminals
-> **Terminals** are the basic symbols from which strings are formed. The term
+> **Terminals** are the basic symbols from which strings are formed. The **term**
 > **token name** is a synonym for terminal and frequently we will use the
 > word **token** for terminal when it is clear that we are talking about just
 > the token name.
