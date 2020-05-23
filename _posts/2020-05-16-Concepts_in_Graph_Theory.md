@@ -134,10 +134,10 @@ We have the following terminologies:
 #### 2.1.1 degree
 With directed graphs, the notion of degree splits into **indegree** and **outdegree**.
 
-#### 1.1.2 (directed) parallel edges
+#### 2.1.2 (directed) parallel edges
 Directed edges that have the same head and tail are **(directed) parallel**.
 
-#### 1.1.3 (directed) loop
+#### 2.1.3 (directed) loop
 For any vertex $$v$$, the directed edge of form $$(v,\ v)$$ is a **(directed) loop**.
 
 ### 2.2 Simple Directed Graph
