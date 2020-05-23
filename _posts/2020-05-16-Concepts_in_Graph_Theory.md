@@ -51,9 +51,7 @@ If every connected component of a graph $$G$$ is a tree, then $$G$$ is a **fores
 ### 1.3 Simple Graph
 下面的概念定义基于Simple Graph，也就是说Graph中没有parallel edges和loop。
 
-#### 1.3.1 walk, path, closed walk and cycle
-
-##### walk and path
+#### 1.3.1 walk and path
 A **walk** in a graph $$G$$, is a sequence of vertices
 
 $$
@@ -78,7 +76,7 @@ A **path** is a walk where all the $$v_i$$ are different.
 
 Some texts use the word **path** for our definition of walk and the term **simple path** for our definition of path.
 
-##### closed walk and cycle
+#### 1.3.2 closed walk and cycle
 A **closed walk** in a graph $$G$$ is a sequence of vertices
 
 $$
@@ -99,9 +97,11 @@ where $$v_0$$ is the same vertice as $$v_k$$ and $$\{v_i, v_{i+1}\}$$ is an edge
 $$0\leq i< k$$. The **length** of the closed walk is $$k$$. A closed walk is said to be a **cycle** if $$k\ge 3$$
 and $$v_0,\ v_1,\ v_2,\ ...,\ v_{k-1}$$ are all different.
 
+walk和path的区别在于a sequence of vertices中是否存在重复vertex。
+
 Some texts use the word **cycle** for our definition of closed walk and **simple cycle** for our definition of cycle.
 
-#### 1.3.2 Connectivity
+#### 1.3.3 Connectivity
 
 ##### connectivity of vertex
 Two vertices in a graph are said to be **connected** if there is a path that begins at one and ends at the other.
