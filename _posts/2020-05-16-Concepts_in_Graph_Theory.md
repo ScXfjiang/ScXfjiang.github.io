@@ -5,20 +5,14 @@ toc:        true
 categories: [Algorithm]
 ---
 ## 1. Undirected Graph
-### 1.1 General Definitions of Undirected Graph
+### 1.1 General Undirected Graph
 一个**Undirected Graph** $$\boldsymbol{G}$$是一个二元组$$< V, E >$$，其中：
 * $$V$$ is an nonempty set of **Vertices**;
 * $$E$$ is a Multiset of (undirected) edges, in other words, there can be same edges in the set;
 * **(Undirected) Edge** is a 2-vertices set, the two vertices are called **end vertices** of the edge,
                         $$\{a, b\}$$ and $$\{b, a\}$$ are different representation of the same edge.
 
-[注] 在本节中，除非显式说明，Graph就代表Undirected Graph。
-
-E.g., for some graph $$G$$:
-![Undirected Graph](/assets/posts/graph_theory/example_undirected_graph.png)
-
-$$V=\{v1,\ v2,\ v3,\ v4,\ v5\}$$ and $$E=\{\{v1,\ v2\}, \{v2,\ v5\}, \{v5,\ v5\}, \{v4,\ v5\}, \{v5,\ v4\}\}$$
-
+[注] 除非显式说明，本节的所有概念都基于Undirected Graph。
 
 We have the following terminologies:
 
@@ -101,8 +95,8 @@ $$
 \end{aligned}
 $$
 
-where $$v_0$$ is the same node as $$v_k$$ and $$\{v_i, v_{i+1}\}$$ is an edge of $$G$$ for all $$i$$ where
-$$0\leq i< k$$. The **length** of the closed walk is $$k$$. A closed walk is said to be a **cycle** if $$,\ge 3$$
+where $$v_0$$ is the same vertice as $$v_k$$ and $$\{v_i, v_{i+1}\}$$ is an edge of $$G$$ for all $$i$$ where
+$$0\leq i< k$$. The **length** of the closed walk is $$k$$. A closed walk is said to be a **cycle** if $$k\ge 3$$
 and $$v_0,\ v_1,\ v_2,\ ...,\ v_{k-1}$$ are all different.
 
 Some texts use the word **cycle** for our definition of closed walk and **simple cycle** for our definition of cycle.
@@ -117,7 +111,7 @@ By convention, every vertex is considered to be connected to itself by a path of
 A graph is said to be **connected** when every pair of vertices are connected.
 
 ##### connected component
-A **connected component** is a subgraph of a graph consisting of some vertex and every node and edge
+A **connected component** is a subgraph of a graph consisting of some vertex and every vertice and edge
 that is connected to that vertex.
 
 ### 1.4 Tree and Forest
@@ -127,3 +121,76 @@ A connected acyclic graph is called a **tree**.
 If every connected component of a graph $$G$$ is a tree, then $$G$$ is a **forest**.
 
 ## 2. Directed Graph
+### 2.1 General Directed Graph
+一个**Directed Graph** $$\boldsymbol{G}$$是一个二元组$$< V, E >$$，其中：
+* $$V$$ is an nonempty set of **Vertices**;
+* $$E$$ is a Multiset of (directed) edges, in other words, there can be same edges in the set;
+* **(Directed) Edge** $$(head, tail)$$ is an ordered pair, the first elem is called **head** and the second elem is called **tail**;
+
+[注] 除非显式说明，本节的所有概念都基于Directed Graph。
+
+We have the following ternimologies:
+
+#### 2.1.1 degree
+With directed graphs, the notion of degree splits into **indegree** and **outdegree**.
+
+#### 1.1.2 (directed) parallel edges
+Directed edges that have the same head and tail are **(directed) parallel**.
+
+#### 1.1.3 (directed) loop
+For any vertex $$v$$, the directed edge of form $$(v,\ v)$$ is a **(directed) loop**.
+
+### 2.2 Simple Directed Graph
+A **simple (directed) graph** is a directed graph without parallel edges or loops.
+
+#### 2.2.1 (directed) walk and (directed) path
+A **(directed) walk** in a directed graph $$G$$ is a sequence of vertices
+
+$$
+\begin{aligned}
+v_0,\ v_1,\ v_2,\ ...,\ v_k 
+\end{aligned}
+$$
+
+and edges
+
+$$
+\begin{aligned}
+(v_0,\ v_1),\ (v_1,\ v_2),\ ..., (v_{k-1},\ v_k)
+\end{aligned}
+$$
+
+A **(directed) path** in a directed graph is a walk where the vertices in the walk are all different.
+
+#### 2.2.2 (directed) closed walk and (directed) cycle
+A **(directed) closed walk** in a graph $$G$$ is a sequence of vertices
+
+$$
+\begin{aligned}
+v_0,\ v_1,\ v_2,\ ...,\ v_k 
+\end{aligned}
+$$
+
+and edges
+
+$$
+\begin{aligned}
+(v_0,\ v_1),\ (v_1,\ v_2),\ ..., (v_{k-1},\ v_k)
+\end{aligned}
+$$
+
+where $$v_0$$ is the same vertice as $$v_k$$ and $$(v_i, v_{i+1})$$ is an (directed) edge of $$G$$ for all $$i$$ where $$0\leq i< k$$.
+The **length** of the (directed) closed walk is $$k$$. A (directed) closed walk is said to be a **(directed) cycle**
+if $$k\ge 3$$ and $$v_0,\ v_1,\ v_2,\ ...,\ v_{k-1}$$ are all different.
+
+#### 2.2.3 Connectivity
+##### Strongly Connectivity
+A directed graph $$G=(V,\ E)$$ is said to be **strongly connected** if for every pair of vertices $$u,\ v\in V$$,
+there is a (directed) path from $$u$$ to $$v$$ (and vice-versa) in $$G$$.
+
+##### Weakly Connectivity
+A directed graph is said to be **weakly connected** (or **connected**) if the corresponding undirected graph
+is connnected.
+
+#### 2.2.4 Directed Acyclic Graph (DAG)
+A directed graph is called a **directed acyclic graph (DAG)** if it does not contain any (directed) cycles.
