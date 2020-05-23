@@ -129,7 +129,7 @@ If every connected component of a graph $$G$$ is a tree, then $$G$$ is a **fores
 
 [注] 除非显式说明，本节的所有概念都基于Directed Graph。
 
-We have the following ternimologies:
+We have the following terminologies:
 
 #### 2.1.1 degree
 With directed graphs, the notion of degree splits into **indegree** and **outdegree**.
