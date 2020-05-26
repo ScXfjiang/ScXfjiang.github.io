@@ -203,4 +203,4 @@ struct command commands[] = {
 ```c
 #define eprintf(…) fprintf (stderr, __VA_ARGS__)
 ```
-When the macro is invoked, all the tokens in its argument list after the last named argument (this macro has none), including any commas, become the variable argument. This sequence of tokens replaces the identifier $$\_\_VA\_ARGS\_\_$$ in the macro body wherever it appears.
+When the macro is invoked, all the tokens in its argument list after the last named argument (this macro has none), including any commas, become the variable argument. This sequence of tokens replaces the **identifier** $$\_\_VA\_ARGS\_\_$$ in the macro body wherever it appears.
