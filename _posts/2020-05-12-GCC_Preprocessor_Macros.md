@@ -202,5 +202,20 @@ struct command commands[] = {
 前面的Function-like macro只允许定义固定数量的参数，Variadic Macros允许定义任意数量的参数。语法如下：
 ```c
 #define eprintf(…) fprintf (stderr, __VA_ARGS__)
+
+eprintf("%s:%d: ", input_file, lineno)
+// -> fprintf(stderr, "%s:%d: ", input_file, lineno)
 ```
 When the macro is invoked, all the tokens in its argument list after the last named argument (this macro has none), including any commas, become the variable argument. This sequence of tokens replaces the **identifier** $$\_\_VA\_ARGS\_\_$$ in the macro body wherever it appears.
+
+Historically, GNU CPP has also had another extension to handle the trailing comma: the ‘##’ token paste operator has a special meaning when placed between a comma and a variable argument. 
+If you write
+```c
+#define eprintf(format, …) fprintf (stderr, format, ##__VA_ARGS__)
+```
+and the variable argument is left out when the eprintf macro is used, then the comma before the ‘##’ will be deleted.
+```c
+eprintf ("success!\n")
+// -> fprintf(stderr, "success!\n");
+```
+
