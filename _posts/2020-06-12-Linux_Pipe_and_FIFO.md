@@ -43,7 +43,7 @@ Pipe是一个多个进程间共享的内核对象，可以想象它应该是使�
 
 int mkfifo(const char* pathname, mode_t mode);
 ```
-mkfifo()通过pathname返回FIFO对象的名称供进程访问，解决了Pipe的匿名问题。
+mkfifo()通过pathname返回FIFO对象的名称供进程访问，解决了Pipe的匿名问题。（思s考如何把patname传递给另一个进程）
 
 **对FIFO的写总是往文件末尾添加数据，对FIFO的读总是从开头返回数据。**
 
