@@ -4,6 +4,11 @@ title:      Linux Pipe and FIFO
 toc:        true
 categories: [System Programming, C/C++]
 ---
+<br/>
+<br/>
+
+**Pipe和FIFO提供字节流模型，类似于TCP；Message Queue提供电报模型，类似于UDP。**
+
 ## 一、(Unnamed) Pipe
 **(Unnamed) Pipe**是比较早期进程间通信方法，其局限在于没有名字，所以某个进程无法根据名字找到指定的Pipe，只能在有亲属关系的进程间使用（不考虑文件描述符传递）。
 
