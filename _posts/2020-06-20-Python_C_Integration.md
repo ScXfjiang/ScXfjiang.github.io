@@ -222,7 +222,7 @@ void Number::display() { printf("Number=%d\n", data); }
 
 %include number.h
 ```
-编译与使用过程与C Extending Module一直。
+编译与使用过程与C Extending Module移植。
 
 注意，SWIG是接口协议，无需关心具体实现。
 
